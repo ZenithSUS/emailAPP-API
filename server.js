@@ -34,7 +34,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(logger);
 app.use(ipDiagnosticMiddleware)
 
-app.get("/favicon.ico", (req, res) => res.status(204).end());
 
 app.set("trust proxy", true);
 app.use("/api/addresses", address);
