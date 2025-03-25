@@ -2,7 +2,7 @@ import { createAddress, getAddresses } from "../appwrite/ip-address.js";
 
 export const insertAddress = async (req, res) => {
   try {
-    const userIp = req.headers['cf-connecting-ip']
+    const userIp =
       req.headers["x-forwarded-for"] ||
       req.headers["x-real"] ||
       req.socket.remoteAddress;
