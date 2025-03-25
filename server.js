@@ -3,6 +3,7 @@ import path from "path";
 import cors from "cors";
 import dotenv from "dotenv";
 import address from "./routes/address.js";
+import { ipDiagnosticMiddleware } from "./middleware/ip-address.js";
 import { fileURLToPath } from "url";
 import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
@@ -16,7 +17,11 @@ const PORT = 9000;
 const app = express();
 
 app.use(express.static(path.join(__dirname, "public")));
-app.set("trust proxy", true);
+// Add this to your main server file
+app.set('trust proxy', true);
+
+// Middleware for comprehensive IP logging
+
 
 app.use(
   cors({
@@ -27,6 +32,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger);
+app.use(ipDiagnosticMiddleware)
 
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
@@ -36,6 +42,6 @@ app.use("/api/addresses", address);
 app.use(notFound);
 app.use(error);
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
