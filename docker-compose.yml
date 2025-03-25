@@ -1,0 +1,19 @@
+services:
+  node-application:
+    image: node
+    container_name: email-app
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    volumes:
+      - ./emailapp-api:/app
+      - ./docker:/docker
+    env_file:
+      - .env
+    networks:
+      - emailapp-network
+
+networks:
+  emailapp-network:
+    driver: bridge
+
