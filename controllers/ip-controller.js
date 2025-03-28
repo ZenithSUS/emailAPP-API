@@ -1,8 +1,23 @@
 import { createAddress } from "../appwrite/ip-address.js";
-import IP from "ip";
+import os from "os"; // Added to fetch network interfaces
+
+// Utility function to get internal IP address
+const getInternalIp = () => {
+  const networkInterfaces = os.networkInterfaces();
+  for (const interfaceName in networkInterfaces) {
+    const interfaces = networkInterfaces[interfaceName];
+    for (const iface of interfaces) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return null;
+};
+
 export const insertAddress = async (req, res) => {
   try {
-    const userIp = IP.address();
+    const userIp = getInternalIp(); // Updated to use getInternalIp()
 
     await createAddress({ address: userIp });
     return res.status(200).json({
@@ -17,10 +32,9 @@ export const insertAddress = async (req, res) => {
   }
 };
 
-
 export const getAddress = async (req, res) => {
   try {
-    let userIp = IP.address();
+    const userIp = getInternalIp(); // Updated to use getInternalIp()
 
     return res.status(200).json({
       message: "Address Fetched!",
