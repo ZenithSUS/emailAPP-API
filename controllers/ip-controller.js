@@ -8,12 +8,20 @@ const getClientIp = (req) => {
   const realIp = req.get('X-Real-IP');
   let ip = forwardedFor?.split(',')[0]?.trim() || realIp || req.ip;
 
+  // Validate the extracted IP address
+  const isValidIp = (ip) => {
+    const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+    const ipv6Regex = /^[0-9a-fA-F:]+$/;
+    return ipv4Regex.test(ip) || ipv6Regex.test(ip);
+  };
+
   // Remove IPv6 wrapper (e.g., "::ffff:192.168.1.1" → "192.168.1.1")
   if (ip.startsWith('::ffff:')) {
     ip = ip.replace('::ffff:', '');
   }
 
-  return ip;
+  // Return valid IP or fallback to null
+  return isValidIp(ip) ? ip : null;
 };
 
 export const insertAddress = async (req, res) => {

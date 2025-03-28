@@ -15,7 +15,7 @@ dotenv.config();
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-app.set('trust proxy', ['loopback']);
+app.set('trust proxy', true);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
