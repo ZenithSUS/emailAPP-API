@@ -12,11 +12,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config();
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 
+app.set('trust proxy', ['loopback']);
 app.use(express.static(path.join(__dirname, "public")));
-app.set("trust proxy", true);
 
 app.use(
   cors({
@@ -26,16 +26,22 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(logger);
 
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
-app.set("trust proxy", true);
+
 app.use("/api/addresses", address);
+
 
 app.use(notFound);
 app.use(error);
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is listening on port ${PORT}`);
+
 });
