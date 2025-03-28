@@ -1,11 +1,8 @@
 import { createAddress } from "../appwrite/ip-address.js";
-
+import IP from "ip";
 export const insertAddress = async (req, res) => {
   try {
-    const userIp = req.socket.remoteAddress ||
-      req.headers["cf-connecting-ip"] ||
-      req.headers["x-real-ip"] ||
-      req.headers["x-forwarded-for"];
+    const userIp = IP.address();
 
     await createAddress({ address: userIp });
     return res.status(200).json({
@@ -20,11 +17,10 @@ export const insertAddress = async (req, res) => {
   }
 };
 
+
 export const getAddress = async (req, res) => {
   try {
-    let userIp = req.socket.remoteAddress || req.headers["cf-connecting-ip"] ||
-    req.headers["x-real-ip"] ||
-    req.headers["x-forwarded-for"];
+    let userIp = IP.address();
 
     return res.status(200).json({
       message: "Address Fetched!",
