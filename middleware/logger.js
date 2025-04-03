@@ -19,12 +19,6 @@ export const logger = (req, res, next) => {
     console.log(`Middleware status: ${res.statusCode < 400 ? "OK" : "Not Ok"}`);
     console.log(`Response time: ${duration}ms \n`);
   });
-
-  console.log("===========================")
-  console.log("Client IP", req.ip);
-  console.log("Received Headers:", req.headers);
-  console.log("X-Real-IP:", req.get("X-Real-IP"));
-  console.log("X-Forwarded-For:", req.get("X-Forwarded-For"));
-  console.log("===========================\n");
+  
   next();
 };

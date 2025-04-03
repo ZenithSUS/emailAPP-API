@@ -35,7 +35,7 @@ app.get('/health', (req, res) => {
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
 
-app.use("/api/addresses", address);
+app.use("/api/", address);
 
 
 app.use(notFound);

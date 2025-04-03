@@ -6,15 +6,44 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             background-color: black;
             color: white;
         }
+
+        button {
+            padding: 20px;
+            background-color: red;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        button:active {
+            transform: scale(0.95);
+            transition: transform 0.1s;
+        }
     </style>
 </head>
 <body> 
     <h1>Email APP API</h1>
+    <button onclick="sendEmail()">Send all in the company</button>
+    <script>
+
+        function sendEmail() {
+            fetch('http://localhost:3000/api/send')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => console.log('Success:', data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>
